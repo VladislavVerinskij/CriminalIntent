@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent2
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,6 +31,11 @@ class CrimeListFragment : Fragment() {
         ViewModelProviders.of(this).get(CrimeListViewModel::class.java)
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks?
+    }
+
 
 
     override fun onCreateView(
@@ -57,6 +63,8 @@ class CrimeListFragment : Fragment() {
                 }
             })
     }
+
+
 
     override fun onDetach() {
         super.onDetach()
@@ -93,6 +101,9 @@ class CrimeListFragment : Fragment() {
         }
 
         override fun onClick(v: View?) {
+
+            Toast.makeText(context, "${crime.title} clicked", Toast.LENGTH_SHORT)
+                .show()
 
            callbacks?.onCrimeSelected(crime.id)
         }

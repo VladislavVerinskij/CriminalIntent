@@ -29,10 +29,11 @@ class MainActivity : AppCompatActivity(),
         }
 
         override fun onCrimeSelected(crimeId: UUID) {
-            val text = "Пора покормить кота!"
-            val duration = Toast.LENGTH_SHORT
-
-            val toast = Toast.makeText(applicationContext, text, duration)
-            toast.show()
+            val fragment = CrimeFragment.newInstance(crimeId)
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
         }
 }

@@ -30,10 +30,10 @@
             android:authorities="com.bignerdranch.android.criminalintent2.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-        </provider>
         <meta-data
             android:name="android.support.FILE_PROVIDER_PATHS"
             android:resource="@xml/files"/>
+        </provider>
     </application>
 
 </manifest>

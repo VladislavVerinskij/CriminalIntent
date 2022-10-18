@@ -26,6 +26,7 @@ import java.util.*
 import android.text.format.DateFormat
 import android.widget.*
 import androidx.core.content.FileProvider
+import getScaledBitmap
 import kotlinx.android.synthetic.main.fragment_crime.crime_title
 import kotlinx.android.synthetic.main.list_item_crime.*
 import java.io.File
@@ -193,6 +194,12 @@ class CrimeFragment: Fragment(), DatePickerFragment.Callbacks {
 
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        requireActivity().revokeUriPermission(photoUri,
+            Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+    }
+
     override fun onStop() {
         super.onStop()
         crimeDetailViewModel.saveCrime(crime)
@@ -209,6 +216,16 @@ class CrimeFragment: Fragment(), DatePickerFragment.Callbacks {
         solvedCheckBox.isChecked = crime.isSolved
         if (crime.suspect.isNotEmpty()) {
             suspectButton.text = crime.suspect
+        }
+        updatePhotoView()
+    }
+
+    private fun updatePhotoView() {
+        if(photoFile.exists()) {
+            val bitmap = getScaledBitmap(photoFile.path, requireActivity())
+            photoView.setImageBitmap(bitmap)
+        } else {
+            photoView.setImageDrawable(null)
         }
     }
 
@@ -237,6 +254,12 @@ class CrimeFragment: Fragment(), DatePickerFragment.Callbacks {
                     crimeDetailViewModel.saveCrime(crime)
                     suspectButton.text = suspect
                 }
+            }
+
+            requestCode == REQUEST_PHOTO -> {
+                requireActivity().revokeUriPermission(photoUri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                updatePhotoView()
             }
         }
     }

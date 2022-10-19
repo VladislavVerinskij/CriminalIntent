@@ -28,16 +28,19 @@ import android.widget.*
 import androidx.core.content.FileProvider
 import getScaledBitmap
 import kotlinx.android.synthetic.main.fragment_crime.crime_title
+import kotlinx.android.synthetic.main.image_fragment.*
 import kotlinx.android.synthetic.main.list_item_crime.*
 import java.io.File
 
 private const val ARG_CRIME_ID = "crime_id"
 private const val TAG = "CrimeFragment"
 private const val DIALOG_DATE = "DialogDate"
+private const val DIALOG_IMAGE = "DialogImage"
 private const val REQUEST_DATE = 0
 private const val DATE_FORMAT = "EEE, MMM, dd"
 private const val REQUEST_CONTACT = 1
 private const val REQUEST_PHOTO = 2
+private const val REQUEST_IMAGE = 3
 
 
 class CrimeFragment: Fragment(), DatePickerFragment.Callbacks {
@@ -188,6 +191,15 @@ class CrimeFragment: Fragment(), DatePickerFragment.Callbacks {
                 }
 
                 startActivityForResult(captureImage, REQUEST_PHOTO)
+            }
+
+        }
+
+        photoView.setOnClickListener {
+
+            ImageDialogFragment.newInstance(photoFile.path).apply {
+                setTargetFragment(this@CrimeFragment, REQUEST_IMAGE)
+                show(this@CrimeFragment.requireFragmentManager(), DIALOG_IMAGE)
             }
 
         }
